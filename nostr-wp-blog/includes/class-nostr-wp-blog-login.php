@@ -49,10 +49,29 @@ final class Nostr_WP_Blog_Login {
 			return;
 		}
 
+		/*
+		 * Inline bootstrap runs before nostr-login.js. Browsers do not expose an event when
+		 * NIP-07 extensions inject window.nostr; we intercept assignment via a setter (when
+		 * the property is still undefined) and dispatch nostr-wp-blog:provider.
+		 */
+		wp_register_script(
+			'nostr-wp-blog-login-boot',
+			false,
+			array(),
+			NOSTR_WP_BLOG_VERSION,
+			true
+		);
+		wp_enqueue_script( 'nostr-wp-blog-login-boot' );
+		wp_add_inline_script(
+			'nostr-wp-blog-login-boot',
+			$this->login_nostr_bootstrap_js(),
+			'after'
+		);
+
 		wp_enqueue_script(
 			'nostr-wp-blog-login',
 			NOSTR_WP_BLOG_URL . 'assets/js/nostr-login.js',
-			array(),
+			array( 'nostr-wp-blog-login-boot' ),
 			NOSTR_WP_BLOG_VERSION,
 			true
 		);
@@ -327,5 +346,55 @@ final class Nostr_WP_Blog_Login {
 		$o->content   = $content;
 		$o->sig       = $sig;
 		return $o;
+	}
+
+	/**
+	 * Inline script: observe window.nostr (NIP-07) via assignment hook + announce when ready.
+	 * There is no browser event when extensions finish injecting; this runs before nostr-login.js.
+	 */
+	private function login_nostr_bootstrap_js(): string {
+		return <<<'JS'
+(function (w) {
+	var EVT = 'nostr-wp-blog:provider';
+	function ready(n) {
+		return (
+			n &&
+			typeof n.getPublicKey === 'function' &&
+			typeof n.signEvent === 'function'
+		);
+	}
+	function announce(n) {
+		if (!ready(n)) {
+			return;
+		}
+		w.dispatchEvent(new CustomEvent(EVT, { detail: n }));
+	}
+	var existing = w.nostr;
+	if (ready(existing)) {
+		queueMicrotask(function () {
+			announce(existing);
+		});
+		return;
+	}
+	if (typeof existing !== 'undefined') {
+		return;
+	}
+	try {
+		var holder;
+		Object.defineProperty(w, 'nostr', {
+			configurable: true,
+			enumerable: true,
+			get: function () {
+				return holder;
+			},
+			set: function (v) {
+				holder = v;
+				announce(v);
+			},
+		});
+	} catch (err) {
+	}
+})(window);
+JS;
 	}
 }

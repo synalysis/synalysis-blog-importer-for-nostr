@@ -6,6 +6,21 @@
 		return;
 	}
 
+	var EVT = 'nostr-wp-blog:provider';
+	var missedProviderEvent = false;
+	var tryAttachNow = null;
+
+	window.addEventListener(
+		EVT,
+		function () {
+			missedProviderEvent = true;
+			if (typeof tryAttachNow === 'function') {
+				tryAttachNow();
+			}
+		},
+		false
+	);
+
 	function $(id) {
 		return document.getElementById(id);
 	}
@@ -16,28 +31,15 @@
 		}
 	}
 
-	function getNostr() {
-		return window.nostr;
+	function getNostrProvider() {
+		var n = window.nostr;
+		if (n && typeof n.getPublicKey === 'function' && typeof n.signEvent === 'function') {
+			return n;
+		}
+		return null;
 	}
 
-	function init() {
-		var btn = $('nostr-wp-blog-login-btn');
-		var statusEl = $('nostr-wp-blog-login-status');
-		if (!btn || !statusEl) {
-			return;
-		}
-
-		var nostr = getNostr();
-		if (nostr && typeof nostr.getPublicKey === 'function' && typeof nostr.signEvent === 'function') {
-			btn.disabled = false;
-			if (cfg.strings && cfg.strings.button) {
-				btn.textContent = cfg.strings.button;
-			}
-		} else {
-			setStatus(statusEl, (cfg.strings && cfg.strings.noExtension) || '');
-			return;
-		}
-
+	function attachLoginHandler(btn, statusEl, nostr) {
 		btn.addEventListener('click', function () {
 			setStatus(statusEl, (cfg.strings && cfg.strings.working) || '…');
 			btn.disabled = true;
@@ -127,6 +129,52 @@
 					btn.disabled = false;
 				});
 		});
+	}
+
+	function init() {
+		var btn = $('nostr-wp-blog-login-btn');
+		var statusEl = $('nostr-wp-blog-login-status');
+		if (!btn || !statusEl) {
+			return;
+		}
+
+		var loginAttached = false;
+
+		function onNostrReady(nostr) {
+			if (loginAttached || !nostr) {
+				return;
+			}
+			loginAttached = true;
+			setStatus(statusEl, '');
+			btn.disabled = false;
+			if (cfg.strings && cfg.strings.button) {
+				btn.textContent = cfg.strings.button;
+			}
+			attachLoginHandler(btn, statusEl, nostr);
+		}
+
+		function tryAttach() {
+			onNostrReady(getNostrProvider());
+		}
+
+		tryAttachNow = tryAttach;
+		if (missedProviderEvent) {
+			tryAttach();
+		}
+		tryAttach();
+
+		window.addEventListener(
+			'load',
+			function () {
+				tryAttach();
+				window.setTimeout(function () {
+					if (!loginAttached) {
+						setStatus(statusEl, (cfg.strings && cfg.strings.noExtension) || '');
+					}
+				}, 0);
+			},
+			{ once: true }
+		);
 	}
 
 	if (document.readyState === 'loading') {
