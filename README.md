@@ -54,6 +54,6 @@ This runs `composer install --no-dev --optimize-autoloader` in `nostr-wp-blog/` 
 
 ## License
 
-The plugin is licensed under the **GNU General Public License v2.0 or later**. See [LICENSE](LICENSE).
+This project is released under the [MIT License](LICENSE).
 
-Copyright notice for your distribution: *Nostr WP Blog — Copyright (C) Synalysis and contributors.*
+Copyright (c) Synalysis and contributors.
