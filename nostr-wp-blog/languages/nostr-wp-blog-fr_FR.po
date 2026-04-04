@@ -1,0 +1,252 @@
+# French translation for Nostr WP Blog
+msgid ""
+msgstr ""
+"Project-Id-Version: Nostr WP Blog 1.0.0\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Nostr WP Blog: run Composer in the plugin directory (composer install) so vendor/autoload.php exists."
+msgstr "Nostr WP Blog : exécutez Composer dans le dossier de l’extension (composer install) pour que vendor/autoload.php existe."
+
+msgid "Read article"
+msgstr "Lire l’article"
+
+msgid "By %s"
+msgstr "Par %s"
+
+msgid "No articles yet. Run a sync from Settings → Nostr blog."
+msgstr "Pas encore d’articles. Lancez une synchronisation depuis Réglages → Blog Nostr."
+
+msgid "Every 15 minutes"
+msgstr "Toutes les 15 minutes"
+
+msgid "Nostr blog"
+msgstr "Blog Nostr"
+
+msgid "Authors (npub or hex pubkey, one per line)"
+msgstr "Auteurs (npub ou clé publique hex, une par ligne)"
+
+msgid "Relays (wss://, one per line)"
+msgstr "Relais (wss://, un par ligne)"
+
+msgid "NIP-05 verification"
+msgstr "Vérification NIP-05"
+
+msgid "Serve /.well-known/nostr.json for NIP-05"
+msgstr "Exposer /.well-known/nostr.json pour NIP-05"
+
+msgid "Nostr clients request this URL with a name query argument and receive the matching hex pubkey plus the relay list from this page."
+msgstr "Les clients Nostr appellent cette URL avec le paramètre de requête name et reçoivent la clé publique hex correspondante ainsi que la liste de relais configurée sur cette page."
+
+msgid "Local names are taken from each author’s kind 0 profile (short “name” field, then display name). Mappings are refreshed when you save these settings."
+msgstr "Les noms locaux proviennent du profil kind 0 de chaque auteur (champ court « name », puis nom affiché). Les correspondances sont mises à jour lors de l’enregistrement de ces réglages."
+
+msgid "Current NIP-05 names"
+msgstr "Noms NIP-05 actuels"
+
+msgid "No identities yet. Add authors and relays above, enable this option, and save to fetch profiles and build names."
+msgstr "Pas encore d’identités. Ajoutez auteurs et relais ci-dessus, activez l’option et enregistrez pour récupérer les profils et construire les noms."
+
+msgid "NIP-05: no kind 0 profile was found on your relays for %d author(s); fallback local names were used. Check relays and author npubs."
+msgstr "NIP-05 : aucun profil kind 0 trouvé sur vos relais pour %d auteur(s) ; des noms locaux de secours ont été utilisés. Vérifiez les relais et les npub des auteurs."
+
+msgid "Nostr login"
+msgstr "Connexion Nostr"
+
+msgid "Allow signing in with a Nostr extension (NIP-07)"
+msgstr "Autoriser la connexion avec une extension Nostr (NIP-07)"
+
+msgid "On wp-login.php, authors listed above can log in as the selected WordPress user by signing a NIP-42 authentication event (kind 22242)."
+msgstr "Sur wp-login.php, les auteurs listés ci-dessus peuvent se connecter en tant qu’utilisateur WordPress choisi en signant un événement d’authentification NIP-42 (kind 22242)."
+
+msgid "WordPress user to log in as"
+msgstr "Utilisateur WordPress pour la connexion"
+
+msgid "— Select —"
+msgstr "— Sélectionner —"
+
+msgid "Nostr login was turned off: choose a WordPress user and add at least one author npub or hex pubkey."
+msgstr "La connexion Nostr a été désactivée : choisissez un utilisateur WordPress et ajoutez au moins un npub ou pubkey hex d’auteur."
+
+msgid "Sign in with Nostr"
+msgstr "Se connecter avec Nostr"
+
+msgid "No Nostr extension found. Install a NIP-07-capable browser extension and try again."
+msgstr "Aucune extension Nostr trouvée. Installez une extension compatible NIP-07 et réessayez."
+
+msgid "Waiting for signature…"
+msgstr "En attente de la signature…"
+
+msgid "Nostr sign-in failed."
+msgstr "Échec de la connexion Nostr."
+
+msgid "This key is not listed as an author for this site."
+msgstr "Cette clé n’est pas enregistrée comme auteur pour ce site."
+
+msgid "Nostr login is not available."
+msgstr "La connexion Nostr n’est pas disponible."
+
+msgid "Invalid or expired security token. Reload the login page."
+msgstr "Jeton de sécurité invalide ou expiré. Rechargez la page de connexion."
+
+msgid "Invalid public key."
+msgstr "Clé publique invalide."
+
+msgid "Sign-in session expired. Try again."
+msgstr "Session de connexion expirée. Réessayez."
+
+msgid "Invalid signed event."
+msgstr "Événement signé invalide."
+
+msgid "Signature verification failed."
+msgstr "Échec de la vérification de la signature."
+
+msgid "Wrong event kind."
+msgstr "Mauvais type d’événement."
+
+msgid "Public key mismatch."
+msgstr "La clé publique ne correspond pas."
+
+msgid "Challenge mismatch."
+msgstr "Le challenge ne correspond pas."
+
+msgid "Relay tag mismatch."
+msgstr "La balise relay ne correspond pas."
+
+msgid "Event timestamp is too far from server time."
+msgstr "L’horodatage de l’événement est trop éloigné de l’heure du serveur."
+
+msgid "Nostr login is not configured."
+msgstr "La connexion Nostr n’est pas configurée."
+
+msgid "Invalid session."
+msgstr "Session invalide."
+
+msgid "Archive URL slug"
+msgstr "Slug d’URL de l’archive"
+
+msgid "List of articles: https://yoursite.example/{slug}/"
+msgstr "Liste des articles : https://yoursite.example/{slug}/"
+
+msgid "Archive page title"
+msgstr "Titre de la page d’archive"
+
+msgid "Heading shown above the article list. Leave empty to use the default WordPress title for this archive."
+msgstr "Titre affiché au-dessus de la liste d’articles. Laissez vide pour utiliser le titre d’archive WordPress par défaut."
+
+msgid "Single article URLs"
+msgstr "URL des articles individuels"
+
+msgid "Under archive slug (recommended)"
+msgstr "Sous le slug d’archive (recommandé)"
+
+msgid "Site root (one path segment; may collide with pages)"
+msgstr "Racine du site (un segment de chemin ; peut entrer en conflit avec les pages)"
+
+msgid "Show topic tags under each article"
+msgstr "Afficher les tags de sujet sous chaque article"
+
+msgid "Tags come from Nostr hashtag tags (t) on the article event. Run sync after changing authors or relays to refresh stored tags."
+msgstr "Les tags proviennent des hashtags Nostr (t) sur l’événement article. Synchronisez après modification des auteurs ou des relais pour actualiser les tags enregistrés."
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "Sync interval"
+msgstr "Intervalle de synchronisation"
+
+msgid "Hourly"
+msgstr "Toutes les heures"
+
+msgid "Twice daily"
+msgstr "Deux fois par jour"
+
+msgid "Daily"
+msgstr "Quotidien"
+
+msgid "Relay request timeout (seconds)"
+msgstr "Délai d’attente du relais (secondes)"
+
+msgid "Max events per relay"
+msgstr "Nombre max. d’événements par relais"
+
+msgid "Save changes"
+msgstr "Enregistrer les modifications"
+
+msgid "Manual sync"
+msgstr "Synchronisation manuelle"
+
+msgid "Sync now"
+msgstr "Synchroniser maintenant"
+
+msgid "Status"
+msgstr "État"
+
+msgid "Published articles: %d"
+msgstr "Articles publiés : %d"
+
+msgid "No sync has been recorded in these settings yet, but you already have published articles. They may have been created manually, imported, or synced on another copy of the site. Run Sync now to refresh from relays and update this status."
+msgstr "Aucune synchronisation n’est encore enregistrée dans ces réglages, mais des articles sont déjà publiés. Ils peuvent avoir été créés manuellement, importés ou synchronisés sur une autre copie du site. Lancez Synchroniser maintenant pour actualiser depuis les relais et mettre à jour cet état."
+
+msgid "Last sync: %s"
+msgstr "Dernière synchronisation : %s"
+
+msgid "No sync has completed yet."
+msgstr "Aucune synchronisation terminée pour l’instant."
+
+msgid "Articles updated in last run: %d"
+msgstr "Articles mis à jour lors de la dernière exécution : %d"
+
+msgid "Last errors"
+msgstr "Dernières erreurs"
+
+msgid "Forbidden."
+msgstr "Accès refusé."
+
+msgid "Settings saved. Rewrite rules were flushed."
+msgstr "Réglages enregistrés. Les règles de réécriture ont été actualisées."
+
+msgid "Sync finished."
+msgstr "Synchronisation terminée."
+
+msgid "Nostr articles"
+msgstr "Articles Nostr"
+
+msgid "Nostr article"
+msgstr "Article Nostr"
+
+msgid "Add New"
+msgstr "Ajouter"
+
+msgid "Add New Article"
+msgstr "Ajouter un article"
+
+msgid "Edit Article"
+msgstr "Modifier l’article"
+
+msgid "New Article"
+msgstr "Nouvel article"
+
+msgid "View Article"
+msgstr "Voir l’article"
+
+msgid "Search Articles"
+msgstr "Rechercher des articles"
+
+msgid "No articles found"
+msgstr "Aucun article trouvé"
+
+msgid "No articles found in Trash"
+msgstr "Aucun article dans la corbeille"
+
+msgid "No author npubs or pubkeys configured."
+msgstr "Aucun npub d’auteur ni clé publique configurée."
+
+msgid "No relay URLs configured."
+msgstr "Aucune URL de relais configurée."
+
+msgid "Relay %1$s: %2$s"
+msgstr "Relais %1$s : %2$s"

@@ -1,0 +1,21 @@
+# Release archives (build with scripts/package-nostr-wp-blog.sh)
+*.zip
+
+# Composer dependencies — run `composer install` in nostr-wp-blog/
+nostr-wp-blog/vendor/
+
+# OS / editor
+.DS_Store
+__MACOSX/
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# WordPress / tooling caches (if present)
+node_modules/

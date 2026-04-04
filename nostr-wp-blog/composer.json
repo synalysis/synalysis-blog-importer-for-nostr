@@ -1,0 +1,20 @@
+{
+    "name": "synalysis/nostr-wp-blog",
+    "description": "WordPress plugin: sync NIP-23 long-form articles from Nostr relays",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://github.com/synalysis/nostr-wp-blog",
+    "support": {
+        "issues": "https://github.com/synalysis/nostr-wp-blog/issues",
+        "source": "https://github.com/synalysis/nostr-wp-blog"
+    },
+    "require": {
+        "swentel/nostr-php": "^1.9",
+        "league/commonmark": "^2.8"
+    },
+    "autoload": {
+        "classmap": [
+            "includes/"
+        ]
+    }
+}

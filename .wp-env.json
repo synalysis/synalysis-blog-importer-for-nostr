@@ -1,0 +1,7 @@
+{
+  "plugins": ["./nostr-wp-blog"],
+  "testsEnvironment": false,
+  "config": {
+    "WP_DEBUG": true
+  }
+}
