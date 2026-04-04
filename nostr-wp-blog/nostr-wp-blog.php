@@ -3,7 +3,7 @@
  * Plugin Name:       Nostr WP Blog
  * Plugin URI:        https://github.com/synalysis/nostr-wp-blog
  * Description:       Sync NIP-23 long-form articles from Nostr relays into WordPress with archive, single templates, and SEO metadata.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Synalysis
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'NOSTR_WP_BLOG_FILE', __FILE__ );
 define( 'NOSTR_WP_BLOG_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NOSTR_WP_BLOG_URL', plugin_dir_url( __FILE__ ) );
-define( 'NOSTR_WP_BLOG_VERSION', '1.0.0' );
+define( 'NOSTR_WP_BLOG_VERSION', '1.1.0' );
 
 /**
  * Load plugin translations.

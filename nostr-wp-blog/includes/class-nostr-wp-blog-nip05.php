@@ -98,13 +98,13 @@ final class Nostr_WP_Blog_Nip05 {
 			return true;
 		}
 
-		$req_uri = (string) ( $_SERVER['REQUEST_URI'] ?? '' );
-		$req_path = parse_url( $req_uri, PHP_URL_PATH );
+		$req_uri  = (string) ( $_SERVER['REQUEST_URI'] ?? '' );
+		$req_path = wp_parse_url( $req_uri, PHP_URL_PATH );
 		if ( ! is_string( $req_path ) || $req_path === '' ) {
 			return false;
 		}
 
-		$expected = parse_url( home_url( '/.well-known/nostr.json' ), PHP_URL_PATH );
+		$expected = wp_parse_url( home_url( '/.well-known/nostr.json' ), PHP_URL_PATH );
 		if ( ! is_string( $expected ) || $expected === '' ) {
 			return false;
 		}

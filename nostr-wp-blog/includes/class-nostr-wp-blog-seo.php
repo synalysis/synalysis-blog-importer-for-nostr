@@ -236,9 +236,13 @@ final class Nostr_WP_Blog_SEO {
 			);
 		}
 
-		$json = wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		$json = wp_json_encode(
+			$data,
+			JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+		);
 		if ( $json ) {
-			echo '<script type="application/ld+json">' . $json . "</script>\n";
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-LD from wp_json_encode() with JSON_HEX_* (safe in HTML).
+			printf( "<script type=\"application/ld+json\">%s</script>\n", $json );
 		}
 	}
 

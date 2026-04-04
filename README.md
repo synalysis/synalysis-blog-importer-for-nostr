@@ -39,7 +39,7 @@ From the repository root:
 ./scripts/package-nostr-wp-blog.sh
 ```
 
-This runs `composer install --no-dev --optimize-autoloader` in `nostr-wp-blog/` (requires `composer` and `zip` on your PATH), then creates `nostr-wp-blog-{Version}.zip` at the repo root (version is read from the plugin header).
+This runs `composer install --no-dev --optimize-autoloader` in `nostr-wp-blog/` (requires `composer` and `zip` on your PATH), then creates `nostr-wp-blog-{Version}.zip` at the repo root (version is read from the plugin header). Exclusions are merged from `nostr-wp-blog/distribution-exclude.txt` plus common junk patterns.
 
 ## License
 

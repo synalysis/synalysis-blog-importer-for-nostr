@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Build nostr-wp-blog.zip for WordPress: Plugins → Add New → Upload Plugin.
-# Requires: zip (zip package). Run from anywhere.
+# Build nostr-wp-blog-{Version}.zip for WordPress: Plugins → Add New → Upload Plugin,
+# or as the artifact to upload when submitting to the WordPress.org plugin directory.
+# Requires: zip, composer. Run from anywhere.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PLUGIN="nostr-wp-blog"
 MAIN="${ROOT}/${PLUGIN}/nostr-wp-blog.php"
+DIST_EXCLUDES_FILE="${ROOT}/${PLUGIN}/distribution-exclude.txt"
 
 if [[ ! -f "$MAIN" ]]; then
 	echo "error: expected ${MAIN}" >&2
@@ -35,13 +37,28 @@ OUT="${ROOT}/${PLUGIN}-${VERSION}.zip"
 cd "$ROOT"
 rm -f "$OUT"
 
-zip -r "$OUT" "$PLUGIN" \
-	-x "${PLUGIN}/.git/*" \
-	-x "${PLUGIN}/.git" \
-	-x "*.DS_Store" \
-	-x "*__MACOSX*" \
-	-x "${PLUGIN}/*.zip" \
-	-q
+ZIP_EXCLUDES=(
+	"-x" "${PLUGIN}/.git/*"
+	"-x" "${PLUGIN}/.git"
+	"-x" "*.DS_Store"
+	"-x" "*__MACOSX*"
+	"-x" "${PLUGIN}/*.zip"
+)
+
+if [[ -f "$DIST_EXCLUDES_FILE" ]]; then
+	while IFS= read -r raw || [[ -n "$raw" ]]; do
+		line="${raw#"${raw%%[![:space:]]*}"}"
+		line="${line%"${line##*[![:space:]]}"}"
+		[[ -z "$line" || "$line" == \#* ]] && continue
+		pat="${PLUGIN}/${line}"
+		ZIP_EXCLUDES+=( "-x" "${pat}" )
+		if [[ "$line" != *'*'* ]]; then
+			ZIP_EXCLUDES+=( "-x" "${pat}/*" )
+		fi
+	done < "$DIST_EXCLUDES_FILE"
+fi
+
+zip -r "$OUT" "$PLUGIN" "${ZIP_EXCLUDES[@]}" -q
 
 echo "Created: ${OUT}"
 ls -lh "$OUT"

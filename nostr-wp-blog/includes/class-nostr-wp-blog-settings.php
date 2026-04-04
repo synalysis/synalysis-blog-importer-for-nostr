@@ -328,10 +328,12 @@ final class Nostr_WP_Blog_Settings {
 			?>
 			<p>
 				<?php
-				printf(
-					/* translators: %d: number of published Nostr articles */
-					esc_html__( 'Published articles: %d', 'nostr-wp-blog' ),
-					$published
+				echo esc_html(
+					sprintf(
+						/* translators: %d: number of published Nostr articles. */
+						__( 'Published articles: %d', 'nostr-wp-blog' ),
+						$published
+					)
 				);
 				?>
 			</p>

@@ -27,7 +27,10 @@ while ( have_posts() ) {
 				<div class="nostr-wp-blog-article__meta">
 					<time class="nostr-wp-blog-article__date" datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
 					<?php if ( $author !== '' ) : ?>
-						<span class="nostr-wp-blog-article__author"><?php echo esc_html( sprintf( __( 'By %s', 'nostr-wp-blog' ), $author ) ); ?></span>
+						<span class="nostr-wp-blog-article__author"><?php
+							/* translators: %s: author display name. */
+							echo esc_html( sprintf( __( 'By %s', 'nostr-wp-blog' ), $author ) );
+						?></span>
 					<?php endif; ?>
 				</div>
 			</header>
