@@ -1,0 +1,41 @@
+# Build installable WordPress plugin zip (with vendor/) and attach to GitHub Releases.
+# Tag the repo (e.g. v1.0.1) after bumping * Version in nostr-wp-blog/nostr-wp-blog.php.
+
+name: Release plugin zip
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          coverage: none
+          extensions: mbstring, xml, ctype, json
+
+      - name: Install zip
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Build plugin zip
+        run: bash scripts/package-nostr-wp-blog.sh
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: nostr-wp-blog-*.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

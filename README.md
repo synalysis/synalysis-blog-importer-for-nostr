@@ -4,17 +4,6 @@ WordPress plugin that syncs [NIP-23](https://github.com/nostr-protocol/nips/blob
 
 **Repository:** [github.com/synalysis/nostr-wp-blog](https://github.com/synalysis/nostr-wp-blog)
 
-### Push this tree to GitHub
-
-If [the GitHub repo](https://github.com/synalysis/nostr-wp-blog) is empty, from this directory run:
-
-```bash
-git remote add origin https://github.com/synalysis/nostr-wp-blog.git
-git push -u origin main
-```
-
-Use SSH if you prefer: `git@github.com:synalysis/nostr-wp-blog.git`.
-
 ## Requirements
 
 - WordPress **6.0+**
