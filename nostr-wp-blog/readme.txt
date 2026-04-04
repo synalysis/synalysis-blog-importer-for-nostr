@@ -3,7 +3,7 @@ Contributors: synalysis
 Tags: blog, import, markdown, authors, feed
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 8.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -39,6 +39,9 @@ Use the [GitHub issue tracker](https://github.com/synalysis/nostr-wp-blog/issues
 
 == Changelog ==
 
+= 1.1.1 =
+* Release zip: strip disallowed file types from bundled Composer dependencies (WordPress.org policy).
+
 = 1.1.0 =
 * Packaging and readme updates; coding standards, security sniffs, and i18n fixes.
 
@@ -47,5 +50,5 @@ Use the [GitHub issue tracker](https://github.com/synalysis/nostr-wp-blog/issues
 
 == Upgrade Notice ==
 
-= 1.1.0 =
-Maintenance and compatibility updates.
+= 1.1.1 =
+Fixes plugin zip contents for directory policy (no disallowed archives/scripts under vendor).

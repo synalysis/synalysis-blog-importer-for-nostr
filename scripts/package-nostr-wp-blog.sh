@@ -28,6 +28,14 @@ fi
 echo "Running composer install in ${ROOT}/${PLUGIN} ..."
 ( cd "${ROOT}/${PLUGIN}" && composer install --no-dev --optimize-autoloader --no-interaction )
 
+# WordPress.org rejects zips that contain these file types anywhere (including vendor/).
+if [[ -d "${ROOT}/${PLUGIN}/vendor" ]]; then
+	find "${ROOT}/${PLUGIN}/vendor" -type f \( \
+		-name '*.sh' -o -name '*.bash' -o -name '*.phar' -o -name '*.zip' \
+		-o -name '*.gz' -o -name '*.tar' -o -name '*.tgz' -o -name '*.rar' -o -name '*.7z' \
+	\) -delete 2>/dev/null || true
+fi
+
 VERSION="$(grep -m1 '^[[:space:]]*\* Version:' "$MAIN" | sed -E 's/^[[:space:]]*\*[[:space:]]*Version:[[:space:]]*//;s/[[:space:]]*$//;s/\r$//')"
 if [[ -z "$VERSION" ]]; then
 	VERSION="0.0.0"
