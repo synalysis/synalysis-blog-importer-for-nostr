@@ -1,5 +1,5 @@
 {
-  "plugins": ["./nostr-wp-blog"],
+  "plugins": ["./synalysis-blog-importer-for-nostr"],
   "testsEnvironment": false,
   "config": {
     "WP_DEBUG": true

@@ -1,5 +1,5 @@
 # Build installable WordPress plugin zip (with vendor/) and attach to GitHub Releases.
-# Tag the repo (e.g. v1.0.1) after bumping * Version in nostr-wp-blog/nostr-wp-blog.php.
+# Tag the repo (e.g. v1.0.1) after bumping * Version in synalysis-blog-importer-for-nostr/synalysis-blog-importer-for-nostr.php.
 
 name: Release plugin zip
 
@@ -35,7 +35,7 @@ jobs:
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: nostr-wp-blog-*.zip
+          files: synalysis-blog-importer-for-nostr-*.zip
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

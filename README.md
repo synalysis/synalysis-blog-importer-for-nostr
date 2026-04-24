@@ -1,6 +1,6 @@
-# Nostr WP Blog
+# Synalysis Blog Importer for Nostr
 
-WordPress plugin that syncs [NIP-23](https://github.com/nostr-protocol/nips/blob/master/23.md) long-form articles from Nostr relays into your site, with an article archive, single-article templates, optional NIP-05 `/.well-known/nostr.json`, and optional Nostr extension login (NIP-07 / NIP-42).
+WordPress plugin that imports [NIP-23](https://github.com/nostr-protocol/nips/blob/master/23.md) long-form articles from relays into your site, with an article archive, single-article templates, optional NIP-05 `/.well-known/nostr.json`, and optional browser extension sign-in (NIP-07 / NIP-42). This project is not affiliated with the Nostr protocol or WordPress.
 
 **Repository:** [github.com/synalysis/nostr-wp-blog](https://github.com/synalysis/nostr-wp-blog)
 
@@ -14,10 +14,10 @@ WordPress plugin that syncs [NIP-23](https://github.com/nostr-protocol/nips/blob
 
 1. Clone this repository (or download a source archive).
 2. If you use the **development tree** (without `vendor/`):  
-   `cd nostr-wp-blog && composer install --no-dev --optimize-autoloader`
-3. Copy the **`nostr-wp-blog`** folder into `wp-content/plugins/`.
-4. In **Plugins**, activate **Nostr WP Blog**.
-5. Open **Settings → Nostr blog** and configure authors, relays, and options.
+   `cd synalysis-blog-importer-for-nostr && composer install --no-dev --optimize-autoloader`
+3. Copy the **`synalysis-blog-importer-for-nostr`** folder into `wp-content/plugins/`.
+4. In **Plugins**, activate **Synalysis Blog Importer for Nostr**.
+5. Open **Settings → Synalysis Blog Importer** and configure authors, relays, and options.
 
 Release **`.zip`** files built with the packaging script include `vendor/` so end users can upload the zip in **Plugins → Add New → Upload** without running Composer.
 
@@ -29,7 +29,7 @@ This repo includes [`.wp-env.json`](.wp-env.json) so you can run WordPress local
 npx @wordpress/env start
 ```
 
-Then finish Composer inside the plugin directory as above (from the host path `nostr-wp-blog/`), since `vendor/` is not committed.
+Then finish Composer inside the plugin directory as above (from the host path `synalysis-blog-importer-for-nostr/`), since `vendor/` is not committed.
 
 ## Build a release zip
 
@@ -39,7 +39,7 @@ From the repository root:
 ./scripts/package-nostr-wp-blog.sh
 ```
 
-This runs `composer install --no-dev --optimize-autoloader` in `nostr-wp-blog/` (requires `composer` and `zip` on your PATH), then creates `nostr-wp-blog-{Version}.zip` at the repo root (version is read from the plugin header). Exclusions are merged from `nostr-wp-blog/distribution-exclude.txt` plus common junk patterns.
+This runs `composer install --no-dev --optimize-autoloader` in `synalysis-blog-importer-for-nostr/` (requires `composer` and `zip` on your PATH), then creates `synalysis-blog-importer-for-nostr-{Version}.zip` at the repo root (version is read from the plugin header). Exclusions are merged from `synalysis-blog-importer-for-nostr/distribution-exclude.txt` plus common junk patterns.
 
 ## License
 

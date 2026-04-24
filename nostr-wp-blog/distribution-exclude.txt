@@ -1,8 +1,0 @@
-# Paths relative to this plugin folder; used by scripts/package-nostr-wp-blog.sh.
-
-.git
-.github
-*.zip
-.DS_Store
-__MACOSX
-distribution-exclude.txt

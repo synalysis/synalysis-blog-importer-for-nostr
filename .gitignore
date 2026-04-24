@@ -1,8 +1,8 @@
 # Release archives (build with scripts/package-nostr-wp-blog.sh)
 *.zip
 
-# Composer dependencies — run `composer install` in nostr-wp-blog/
-nostr-wp-blog/vendor/
+# Composer dependencies — run `composer install` in synalysis-blog-importer-for-nostr/
+synalysis-blog-importer-for-nostr/vendor/
 
 # OS / editor
 .DS_Store

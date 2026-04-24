@@ -1,0 +1,255 @@
+# Copyright (C) 2026 Synalysis
+# This file is distributed under the MIT License.
+msgid ""
+msgstr ""
+"Project-Id-Version: Synalysis Blog Importer for Nostr 1.1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Synalysis Blog Importer for Nostr: run Composer in the plugin directory (composer install) so vendor/autoload.php exists."
+msgstr ""
+
+msgid "Read article"
+msgstr ""
+
+msgid "By %s"
+msgstr ""
+
+msgid "No articles yet. Run a sync from Settings → Synalysis Blog Importer."
+msgstr ""
+
+msgid "Every 15 minutes"
+msgstr ""
+
+msgid "Synalysis Blog Importer"
+msgstr ""
+
+msgid "Authors (npub or hex pubkey, one per line)"
+msgstr ""
+
+msgid "Relays (wss://, one per line)"
+msgstr ""
+
+msgid "NIP-05 verification"
+msgstr ""
+
+msgid "Serve /.well-known/nostr.json for NIP-05"
+msgstr ""
+
+msgid "Clients request this URL with a name query argument and receive the matching hex pubkey plus the relay list from this page."
+msgstr ""
+
+msgid "Local names are taken from each author’s kind 0 profile (short “name” field, then display name). Mappings are refreshed when you save these settings."
+msgstr ""
+
+msgid "Current NIP-05 names"
+msgstr ""
+
+msgid "No identities yet. Add authors and relays above, enable this option, and save to fetch profiles and build names."
+msgstr ""
+
+msgid "NIP-05: no kind 0 profile was found on your relays for %d author(s); fallback local names were used. Check relays and author npubs."
+msgstr ""
+
+msgid "Extension sign-in"
+msgstr ""
+
+msgid "Allow signing in with a browser extension (NIP-07)"
+msgstr ""
+
+msgid "On wp-login.php, authors listed above can log in as the selected WordPress user by signing a NIP-42 authentication event (kind 22242)."
+msgstr ""
+
+msgid "WordPress user to log in as"
+msgstr ""
+
+msgid "— Select —"
+msgstr ""
+
+msgid "Extension sign-in was turned off: choose a WordPress user and add at least one author npub or hex pubkey."
+msgstr ""
+
+msgid "Sign in with browser extension"
+msgstr ""
+
+msgid "No compatible browser extension found. Install one that supports NIP-07 and try again."
+msgstr ""
+
+msgid "Waiting for signature…"
+msgstr ""
+
+msgid "Extension sign-in failed."
+msgstr ""
+
+msgid "This key is not listed as an author for this site."
+msgstr ""
+
+msgid "Extension sign-in is not available."
+msgstr ""
+
+msgid "Invalid or expired security token. Reload the login page."
+msgstr ""
+
+msgid "Invalid public key."
+msgstr ""
+
+msgid "Sign-in session expired. Try again."
+msgstr ""
+
+msgid "Invalid signed event."
+msgstr ""
+
+msgid "Signature verification failed."
+msgstr ""
+
+msgid "Wrong event kind."
+msgstr ""
+
+msgid "Public key mismatch."
+msgstr ""
+
+msgid "Challenge mismatch."
+msgstr ""
+
+msgid "Relay tag mismatch."
+msgstr ""
+
+msgid "Event timestamp is too far from server time."
+msgstr ""
+
+msgid "Extension sign-in is not configured."
+msgstr ""
+
+msgid "Invalid session."
+msgstr ""
+
+msgid "Archive URL slug"
+msgstr ""
+
+msgid "List of articles: https://yoursite.example/{slug}/"
+msgstr ""
+
+msgid "Archive page title"
+msgstr ""
+
+msgid "Heading shown above the article list. Leave empty to use the default WordPress title for this archive."
+msgstr ""
+
+msgid "Single article URLs"
+msgstr ""
+
+msgid "Under archive slug (recommended)"
+msgstr ""
+
+msgid "Site root (one path segment; may collide with pages)"
+msgstr ""
+
+msgid "Show topic tags under each article"
+msgstr ""
+
+msgid "Tags come from hashtag tags (t) on the article event. Run sync after changing authors or relays to refresh stored tags."
+msgstr ""
+
+msgid "Tags"
+msgstr ""
+
+msgid "Sync interval"
+msgstr ""
+
+msgid "Hourly"
+msgstr ""
+
+msgid "Twice daily"
+msgstr ""
+
+msgid "Daily"
+msgstr ""
+
+msgid "Relay request timeout (seconds)"
+msgstr ""
+
+msgid "Max events per relay"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Manual sync"
+msgstr ""
+
+msgid "Sync now"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Published articles: %d"
+msgstr ""
+
+msgid "No sync has been recorded in these settings yet, but you already have published articles. They may have been created manually, imported, or synced on another copy of the site. Run Sync now to refresh from relays and update this status."
+msgstr ""
+
+msgid "Last sync: %s"
+msgstr ""
+
+msgid "No sync has completed yet."
+msgstr ""
+
+msgid "Articles updated in last run: %d"
+msgstr ""
+
+msgid "Last errors"
+msgstr ""
+
+msgid "Forbidden."
+msgstr ""
+
+msgid "Settings saved. Rewrite rules were flushed."
+msgstr ""
+
+msgid "Sync finished."
+msgstr ""
+
+msgid "Relay articles"
+msgstr ""
+
+msgid "Relay article"
+msgstr ""
+
+msgid "Add New"
+msgstr ""
+
+msgid "Add New Article"
+msgstr ""
+
+msgid "Edit Article"
+msgstr ""
+
+msgid "New Article"
+msgstr ""
+
+msgid "View Article"
+msgstr ""
+
+msgid "Search Articles"
+msgstr ""
+
+msgid "No articles found"
+msgstr ""
+
+msgid "No articles found in Trash"
+msgstr ""
+
+msgid "No author npubs or pubkeys configured."
+msgstr ""
+
+msgid "No relay URLs configured."
+msgstr ""
+
+msgid "Relay %1$s: %2$s"
+msgstr ""

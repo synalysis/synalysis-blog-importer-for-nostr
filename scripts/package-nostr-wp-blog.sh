@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Build nostr-wp-blog-{Version}.zip for WordPress: Plugins → Add New → Upload Plugin,
+# Build synalysis-blog-importer-for-nostr-{Version}.zip for WordPress: Plugins → Add New → Upload Plugin,
 # or as the artifact to upload when submitting to the WordPress.org plugin directory.
 # Requires: zip, composer. Run from anywhere.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN="nostr-wp-blog"
-MAIN="${ROOT}/${PLUGIN}/nostr-wp-blog.php"
+PLUGIN="synalysis-blog-importer-for-nostr"
+MAIN="${ROOT}/${PLUGIN}/synalysis-blog-importer-for-nostr.php"
 DIST_EXCLUDES_FILE="${ROOT}/${PLUGIN}/distribution-exclude.txt"
 
 if [[ ! -f "$MAIN" ]]; then
