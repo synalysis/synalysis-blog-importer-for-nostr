@@ -16,10 +16,10 @@ nostr_wp_blog_template_header();
 <main id="primary" class="site-main nostr-wp-blog nostr-wp-blog--archive">
 	<header class="nostr-wp-blog-archive-header">
 		<?php
-		$archive_settings = nostr_wp_blog_get_settings();
-		$list_title       = isset( $archive_settings['archive_list_title'] ) ? trim( (string) $archive_settings['archive_list_title'] ) : '';
-		if ( $list_title !== '' ) {
-			echo '<h1 class="nostr-wp-blog-archive-title">' . esc_html( $list_title ) . '</h1>';
+		$nostr_wp_blog_archive_settings = nostr_wp_blog_get_settings();
+		$nostr_wp_blog_list_title       = isset( $nostr_wp_blog_archive_settings['archive_list_title'] ) ? trim( (string) $nostr_wp_blog_archive_settings['archive_list_title'] ) : '';
+		if ( $nostr_wp_blog_list_title !== '' ) {
+			echo '<h1 class="nostr-wp-blog-archive-title">' . esc_html( $nostr_wp_blog_list_title ) . '</h1>';
 		} else {
 			the_archive_title( '<h1 class="nostr-wp-blog-archive-title">', '</h1>' );
 		}

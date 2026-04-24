@@ -1,9 +1,9 @@
 === Synalysis Blog Importer for Nostr ===
 Contributors: synalysis
-Tags: blog, import, markdown, authors, feed, nostr, relay
+Tags: blog, import, markdown, nostr, relay
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 8.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -39,6 +39,9 @@ Use the [GitHub issue tracker](https://github.com/synalysis/nostr-wp-blog/issues
 
 == Changelog ==
 
+= 1.1.3 =
+* Plugin check / PHPCS compatibility: login redirect handling, NIP-05 request path, readme tags (max 5), prefixed template variables, slug collision via WP_Query, documented ignores where appropriate.
+
 = 1.1.2 =
 * Renamed plugin for WordPress.org trademark guidelines; text domain matches slug. Removed redundant load_plugin_textdomain (WP 4.6+). Documented public REST permission callbacks for extension sign-in.
 * Admin notices limited to this plugin’s settings screen and (for a missing vendor tree) the Plugins list, in line with directory guidance on dashboard notices.
@@ -53,6 +56,9 @@ Use the [GitHub issue tracker](https://github.com/synalysis/nostr-wp-blog/issues
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.3 =
+Coding standards and readme tag cleanup.
 
 = 1.1.2 =
 Renamed plugin and slug for directory compliance. Re-activate after upload if WordPress does not prompt automatically.

@@ -406,6 +406,7 @@ final class Nostr_WP_Blog_Sync {
 
 		$dates = $this->resolve_post_dates( $event, $pub_at );
 
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key,WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Bounded sync: one row by stable address meta.
 		$existing = get_posts(
 			array(
 				'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
@@ -534,9 +535,8 @@ final class Nostr_WP_Blog_Sync {
 	}
 
 	private function ensure_unique_slug( string $slug, string $pubkey, string $d ): string {
-		global $wpdb;
-
 		$address = nostr_wp_blog_article_address( $pubkey, $d );
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key,WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Bounded sync: one row by stable address meta.
 		$own_id  = get_posts(
 			array(
 				'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
@@ -552,17 +552,20 @@ final class Nostr_WP_Blog_Sync {
 		$n    = 0;
 		while ( $n < 1000 ) {
 			$candidate = $n === 0 ? $base : $base . '-' . $n;
-			$clash     = $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = %s LIMIT 1",
-					$candidate,
-					Nostr_WP_Blog_CPT::POST_TYPE
+			$clash_ids = get_posts(
+				array(
+					'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
+					'post_status'    => 'any',
+					'name'           => $candidate,
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
 				)
 			);
-			if ( ! $clash ) {
+			if ( $clash_ids === array() ) {
 				return $candidate;
 			}
-			if ( $own_id !== array() && (int) $clash === (int) $own_id[0] ) {
+			$clash_id = (int) $clash_ids[0];
+			if ( $own_id !== array() && $clash_id === (int) $own_id[0] ) {
 				return $candidate;
 			}
 			++$n;

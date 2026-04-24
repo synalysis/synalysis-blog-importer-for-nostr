@@ -3,7 +3,7 @@
  * Plugin Name:       Synalysis Blog Importer for Nostr
  * Plugin URI:        https://github.com/synalysis/nostr-wp-blog
  * Description:       Imports NIP-23 long-form articles from Nostr relays into WordPress with archive and single templates, optional NIP-05, and optional extension sign-in (not affiliated with the Nostr protocol or WordPress).
- * Version:           1.1.2
+ * Version:           1.1.3
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Synalysis
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'NOSTR_WP_BLOG_FILE', __FILE__ );
 define( 'NOSTR_WP_BLOG_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NOSTR_WP_BLOG_URL', plugin_dir_url( __FILE__ ) );
-define( 'NOSTR_WP_BLOG_VERSION', '1.1.2' );
+define( 'NOSTR_WP_BLOG_VERSION', '1.1.3' );
 
 if ( ! is_readable( NOSTR_WP_BLOG_DIR . 'vendor/autoload.php' ) ) {
 	add_action(

@@ -90,9 +90,13 @@ final class Nostr_WP_Blog_Login {
 			true
 		);
 
+		// redirect_to is a public wp-login.php query parameter (same as core); validated below.
 		$redirect = '';
 		if ( isset( $_REQUEST['redirect_to'] ) && is_string( $_REQUEST['redirect_to'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$redirect = wp_validate_redirect( wp_unslash( $_REQUEST['redirect_to'] ), admin_url() );
+			$redirect = wp_validate_redirect(
+				wp_sanitize_redirect( wp_unslash( $_REQUEST['redirect_to'] ) ),
+				admin_url()
+			);
 		}
 		if ( $redirect === '' ) {
 			$redirect = admin_url();
@@ -274,6 +278,8 @@ final class Nostr_WP_Blog_Login {
 
 		wp_set_current_user( $uid );
 		wp_set_auth_cookie( $uid, true );
+		// Core hook name (must not be prefixed) so other plugins see a normal login.
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'wp_login', $user->user_login, $user );
 
 		$redirect = isset( $params['redirect_to'] ) ? wp_validate_redirect( (string) $params['redirect_to'], admin_url() ) : admin_url();

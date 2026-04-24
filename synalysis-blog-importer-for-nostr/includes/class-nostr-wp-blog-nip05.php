@@ -98,7 +98,8 @@ final class Nostr_WP_Blog_Nip05 {
 			return true;
 		}
 
-		$req_uri  = (string) ( $_SERVER['REQUEST_URI'] ?? '' );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Used only to compare request path via wp_parse_url(); not echoed.
+		$req_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
 		$req_path = wp_parse_url( $req_uri, PHP_URL_PATH );
 		if ( ! is_string( $req_path ) || $req_path === '' ) {
 			return false;
