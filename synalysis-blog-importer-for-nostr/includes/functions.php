@@ -2,7 +2,7 @@
 /**
  * Helpers for Synalysis Blog Importer for Nostr.
  *
- * @package NostrWpBlog
+ * @package SynalysisBlogImporterForNostr
  */
 
 declare(strict_types=1);
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return array<string, mixed>
  */
-function nostr_wp_blog_get_settings(): array {
+function synalysis_blog_importer_get_settings(): array {
 	$defaults = array(
 		'authors'            => '',
 		'relays'             => "wss://relay.damus.io\nwss://nos.lol\nwss://relay.nostr.band",
@@ -25,8 +25,6 @@ function nostr_wp_blog_get_settings(): array {
 		'show_article_tags'  => true,
 		'nip05_enabled'        => false,
 		'nip05_identity_map'   => array(),
-		'nostr_login_enabled'  => false,
-		'nostr_login_user_id'  => 0,
 		'single_url_mode'      => 'prefixed',
 		'sync_interval'      => 'hourly',
 		'last_sync'          => '',
@@ -36,7 +34,7 @@ function nostr_wp_blog_get_settings(): array {
 		'event_limit'        => 500,
 	);
 
-	$saved = get_option( 'nostr_wp_blog_settings', array() );
+	$saved = get_option( 'synalysis_blog_importer_settings', array() );
 	if ( ! is_array( $saved ) ) {
 		$saved = array();
 	}
@@ -47,15 +45,15 @@ function nostr_wp_blog_get_settings(): array {
 /**
  * @param array<string, mixed> $settings Partial settings.
  */
-function nostr_wp_blog_save_settings( array $settings ): void {
-	$current = nostr_wp_blog_get_settings();
-	update_option( 'nostr_wp_blog_settings', array_merge( $current, $settings ), true );
+function synalysis_blog_importer_save_settings( array $settings ): void {
+	$current = synalysis_blog_importer_get_settings();
+	update_option( 'synalysis_blog_importer_settings', array_merge( $current, $settings ), true );
 }
 
 /**
  * @return list<string>
  */
-function nostr_wp_blog_parse_lines( string $text ): array {
+function synalysis_blog_importer_parse_lines( string $text ): array {
 	$lines = preg_split( '/\r\n|\r|\n/', $text ) ?: array();
 	$out   = array();
 	foreach ( $lines as $line ) {
@@ -74,7 +72,7 @@ function nostr_wp_blog_parse_lines( string $text ): array {
  * locate_template() can behave inconsistently across WP versions. Classic themes
  * need both template files or core emits a deprecation when loading headers.
  */
-function nostr_wp_blog_should_use_theme_wrappers(): bool {
+function synalysis_blog_importer_should_use_theme_wrappers(): bool {
 	if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
 		return false;
 	}
@@ -86,8 +84,8 @@ function nostr_wp_blog_should_use_theme_wrappers(): bool {
 /**
  * Open front template: theme wrappers or a minimal document (block themes).
  */
-function nostr_wp_blog_template_header(): void {
-	if ( nostr_wp_blog_should_use_theme_wrappers() ) {
+function synalysis_blog_importer_template_header(): void {
+	if ( synalysis_blog_importer_should_use_theme_wrappers() ) {
 		get_header();
 		return;
 	}
@@ -107,8 +105,8 @@ function nostr_wp_blog_template_header(): void {
 /**
  * Close front template.
  */
-function nostr_wp_blog_template_footer(): void {
-	if ( nostr_wp_blog_should_use_theme_wrappers() ) {
+function synalysis_blog_importer_template_footer(): void {
+	if ( synalysis_blog_importer_should_use_theme_wrappers() ) {
 		get_footer();
 		return;
 	}
@@ -119,14 +117,14 @@ function nostr_wp_blog_template_footer(): void {
 /**
  * Stable address for a NIP-23 replaceable article.
  */
-function nostr_wp_blog_article_address( string $pubkey_hex, string $d_tag ): string {
+function synalysis_blog_importer_article_address( string $pubkey_hex, string $d_tag ): string {
 	return '30023:' . strtolower( $pubkey_hex ) . ':' . $d_tag;
 }
 
 /**
  * @param object $event Relay event object (stdClass).
  */
-function nostr_wp_blog_event_tag( object $event, string $name ): string {
+function synalysis_blog_importer_event_tag( object $event, string $name ): string {
 	if ( empty( $event->tags ) || ! is_array( $event->tags ) ) {
 		return '';
 	}
@@ -146,7 +144,7 @@ function nostr_wp_blog_event_tag( object $event, string $name ): string {
  *
  * @return list<string>
  */
-function nostr_wp_blog_event_tags_named( object $event, string $name ): array {
+function synalysis_blog_importer_event_tags_named( object $event, string $name ): array {
 	$vals = array();
 	if ( empty( $event->tags ) || ! is_array( $event->tags ) ) {
 		return $vals;
@@ -167,12 +165,12 @@ function nostr_wp_blog_event_tags_named( object $event, string $name ): array {
  *
  * @return list<string>
  */
-function nostr_wp_blog_get_author_pubkey_hexes(): array {
-	$lines = nostr_wp_blog_parse_lines( (string) nostr_wp_blog_get_settings()['authors'] );
+function synalysis_blog_importer_get_author_pubkey_hexes(): array {
+	$lines = synalysis_blog_importer_parse_lines( (string) synalysis_blog_importer_get_settings()['authors'] );
 	$out   = array();
 	$seen  = array();
 	foreach ( $lines as $line ) {
-		$hex = nostr_wp_blog_normalize_pubkey_hex( $line );
+		$hex = synalysis_blog_importer_normalize_pubkey_hex( $line );
 		if ( $hex === null || isset( $seen[ $hex ] ) ) {
 			continue;
 		}
@@ -182,7 +180,7 @@ function nostr_wp_blog_get_author_pubkey_hexes(): array {
 	return $out;
 }
 
-function nostr_wp_blog_normalize_pubkey_hex( string $key ): ?string {
+function synalysis_blog_importer_normalize_pubkey_hex( string $key ): ?string {
 	$key = trim( $key );
 	if ( $key === '' ) {
 		return null;
@@ -208,8 +206,8 @@ function nostr_wp_blog_normalize_pubkey_hex( string $key ): ?string {
  *
  * @return array<string, string>
  */
-function nostr_wp_blog_get_nip05_name_map(): array {
-	$m = nostr_wp_blog_get_settings()['nip05_identity_map'] ?? array();
+function synalysis_blog_importer_get_nip05_name_map(): array {
+	$m = synalysis_blog_importer_get_settings()['nip05_identity_map'] ?? array();
 	if ( ! is_array( $m ) ) {
 		return array();
 	}
@@ -230,7 +228,7 @@ function nostr_wp_blog_get_nip05_name_map(): array {
 /**
  * Sanitize a Nostr profile "name" (or similar) into a NIP-05 local part.
  */
-function nostr_wp_blog_sanitize_nip05_local_name( string $raw ): string {
+function synalysis_blog_importer_sanitize_nip05_local_name( string $raw ): string {
 	$s = strtolower( trim( wp_strip_all_tags( $raw ) ) );
 	$s = preg_replace( '/\s+/', '-', $s );
 	$s = is_string( $s ) ? preg_replace( '/[^a-z0-9_.-]+/', '', $s ) : '';
@@ -251,13 +249,13 @@ function nostr_wp_blog_sanitize_nip05_local_name( string $raw ): string {
 /**
  * (Re)schedule background sync.
  */
-function nostr_wp_blog_schedule_cron(): void {
-	$hook = Nostr_WP_Blog_Sync::CRON_HOOK;
+function synalysis_blog_importer_schedule_cron(): void {
+	$hook = Synalysis_Blog_Importer_Sync::CRON_HOOK;
 	wp_clear_scheduled_hook( $hook );
 
-	$settings = nostr_wp_blog_get_settings();
+	$settings = synalysis_blog_importer_get_settings();
 	$interval = isset( $settings['sync_interval'] ) ? (string) $settings['sync_interval'] : 'hourly';
-	$allowed  = array( 'nostr_wp_blog_quarterhourly', 'hourly', 'twicedaily', 'daily' );
+	$allowed  = array( 'synalysis_blog_importer_quarterhourly', 'hourly', 'twicedaily', 'daily' );
 	if ( ! in_array( $interval, $allowed, true ) ) {
 		$interval = 'hourly';
 	}
@@ -268,9 +266,9 @@ function nostr_wp_blog_schedule_cron(): void {
 /**
  * @param array<string, mixed> $args WP_Query args overrides.
  */
-function nostr_wp_blog_article_query( array $args = array() ): \WP_Query {
+function synalysis_blog_importer_article_query( array $args = array() ): \WP_Query {
 	$defaults = array(
-		'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
+		'post_type'      => Synalysis_Blog_Importer_CPT::POST_TYPE,
 		'post_status'    => 'publish',
 		'posts_per_page' => get_option( 'posts_per_page', 10 ),
 		'orderby'        => 'date',
@@ -283,8 +281,8 @@ function nostr_wp_blog_article_query( array $args = array() ): \WP_Query {
 /**
  * Cached display name from kind 0 metadata (sync), for single article header.
  */
-function nostr_wp_blog_get_article_author_display( int $post_id ): string {
-	$v = get_post_meta( $post_id, Nostr_WP_Blog_Sync::META_AUTHOR_DISPLAY, true );
+function synalysis_blog_importer_get_article_author_display( int $post_id ): string {
+	$v = get_post_meta( $post_id, Synalysis_Blog_Importer_Sync::META_AUTHOR_DISPLAY, true );
 	if ( ! is_string( $v ) || $v === '' ) {
 		return '';
 	}
@@ -296,8 +294,8 @@ function nostr_wp_blog_get_article_author_display( int $post_id ): string {
  *
  * @return list<string>
  */
-function nostr_wp_blog_get_article_topic_tags( int $post_id ): array {
-	$raw = get_post_meta( $post_id, Nostr_WP_Blog_Sync::META_TOPIC_TAGS, true );
+function synalysis_blog_importer_get_article_topic_tags( int $post_id ): array {
+	$raw = get_post_meta( $post_id, Synalysis_Blog_Importer_Sync::META_TOPIC_TAGS, true );
 	if ( ! is_string( $raw ) || $raw === '' ) {
 		return array();
 	}
@@ -320,30 +318,30 @@ function nostr_wp_blog_get_article_topic_tags( int $post_id ): array {
 /**
  * Card markup for archive / shortcode (loop context).
  */
-function nostr_wp_blog_render_card(): void {
+function synalysis_blog_importer_render_card(): void {
 	$post_id = get_the_ID();
 	if ( ! $post_id ) {
 		return;
 	}
 
-	$img = get_post_meta( $post_id, Nostr_WP_Blog_Sync::META_IMAGE, true );
+	$img = get_post_meta( $post_id, Synalysis_Blog_Importer_Sync::META_IMAGE, true );
 	$img = is_string( $img ) ? esc_url( $img ) : '';
 	?>
-	<article <?php post_class( 'nostr-wp-blog-card' ); ?>>
+	<article <?php post_class( 'synalysis-blog-importer-card' ); ?>>
 		<?php if ( $img !== '' ) : ?>
-			<a class="nostr-wp-blog-card__media" href="<?php the_permalink(); ?>">
+			<a class="synalysis-blog-importer-card__media" href="<?php the_permalink(); ?>">
 				<img src="<?php echo esc_url( $img ); ?>" alt="" loading="lazy" width="640" height="360" />
 			</a>
 		<?php endif; ?>
-		<div class="nostr-wp-blog-card__body">
-			<h2 class="nostr-wp-blog-card__title">
+		<div class="synalysis-blog-importer-card__body">
+			<h2 class="synalysis-blog-importer-card__title">
 				<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 			</h2>
-			<time class="nostr-wp-blog-card__date" datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
+			<time class="synalysis-blog-importer-card__date" datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
 			<?php if ( has_excerpt() ) : ?>
-				<p class="nostr-wp-blog-card__excerpt"><?php echo esc_html( wp_strip_all_tags( get_the_excerpt() ) ); ?></p>
+				<p class="synalysis-blog-importer-card__excerpt"><?php echo esc_html( wp_strip_all_tags( get_the_excerpt() ) ); ?></p>
 			<?php endif; ?>
-			<a class="nostr-wp-blog-card__read" href="<?php the_permalink(); ?>"><?php esc_html_e( 'Read article', 'synalysis-blog-importer-for-nostr' ); ?></a>
+			<a class="synalysis-blog-importer-card__read" href="<?php the_permalink(); ?>"><?php esc_html_e( 'Read article', 'synalysis-blog-importer-for-nostr' ); ?></a>
 		</div>
 	</article>
 	<?php

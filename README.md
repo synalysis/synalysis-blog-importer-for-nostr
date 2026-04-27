@@ -1,8 +1,8 @@
 # Synalysis Blog Importer for Nostr
 
-WordPress plugin that imports [NIP-23](https://github.com/nostr-protocol/nips/blob/master/23.md) long-form articles from relays into your site, with an article archive, single-article templates, optional NIP-05 `/.well-known/nostr.json`, and optional browser extension sign-in (NIP-07 / NIP-42). This project is not affiliated with the Nostr protocol or WordPress.
+WordPress plugin that imports [NIP-23](https://github.com/nostr-protocol/nips/blob/master/23.md) long-form articles from relays into your site, with an article archive, single-article templates, and optional NIP-05 `/.well-known/nostr.json`. This project is not affiliated with the Nostr protocol or WordPress.
 
-**Repository:** [github.com/synalysis/nostr-wp-blog](https://github.com/synalysis/nostr-wp-blog)
+**Repository:** [github.com/synalysis/synalysis-blog-importer-for-nostr](https://github.com/synalysis/synalysis-blog-importer-for-nostr)
 
 ## Requirements
 

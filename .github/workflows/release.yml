@@ -1,5 +1,5 @@
 # Build installable WordPress plugin zip (with vendor/) and attach to GitHub Releases.
-# Push a tag matching v* (e.g. v1.1.2) after bumping * Version in synalysis-blog-importer-for-nostr/synalysis-blog-importer-for-nostr.php.
+# Push a tag matching v* (e.g. v1.1.4) after bumping * Version in synalysis-blog-importer-for-nostr/synalysis-blog-importer-for-nostr.php.
 
 name: Release plugin zip
 

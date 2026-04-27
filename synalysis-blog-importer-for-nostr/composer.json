@@ -3,10 +3,10 @@
     "description": "WordPress plugin: sync NIP-23 long-form articles from Nostr relays",
     "type": "wordpress-plugin",
     "license": "MIT",
-    "homepage": "https://github.com/synalysis/nostr-wp-blog",
+    "homepage": "https://github.com/synalysis/synalysis-blog-importer-for-nostr",
     "support": {
-        "issues": "https://github.com/synalysis/nostr-wp-blog/issues",
-        "source": "https://github.com/synalysis/nostr-wp-blog"
+        "issues": "https://github.com/synalysis/synalysis-blog-importer-for-nostr/issues",
+        "source": "https://github.com/synalysis/synalysis-blog-importer-for-nostr"
     },
     "require": {
         "swentel/nostr-php": "^1.9",

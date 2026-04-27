@@ -30,8 +30,11 @@ echo "Running composer install in ${ROOT}/${PLUGIN} ..."
 
 # WordPress.org rejects zips that contain these file types anywhere (including vendor/).
 if [[ -d "${ROOT}/${PLUGIN}/vendor" ]]; then
+	find "${ROOT}/${PLUGIN}/vendor" -type d \( \
+		-name tests -o -name test -o -name fixtures \
+	\) -prune -exec rm -rf {} + 2>/dev/null || true
 	find "${ROOT}/${PLUGIN}/vendor" -type f \( \
-		-name '*.sh' -o -name '*.bash' -o -name '*.phar' -o -name '*.zip' \
+		-name '*.sh' -o -name '*.bash' -o -name '*.input' -o -name '*.phar' -o -name '*.zip' \
 		-o -name '*.gz' -o -name '*.tar' -o -name '*.tgz' -o -name '*.rar' -o -name '*.7z' \
 	\) -delete 2>/dev/null || true
 fi

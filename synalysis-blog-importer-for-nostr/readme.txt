@@ -3,7 +3,7 @@ Contributors: synalysis
 Tags: blog, import, markdown, nostr, relay
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 Requires PHP: 8.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -12,7 +12,7 @@ Imports NIP-23 long-form articles from configured relays into WordPress. Not aff
 
 == Description ==
 
-This plugin fetches [NIP-23](https://github.com/nostr-protocol/nips/blob/master/23.md) long-form articles from relays you configure and stores them as a dedicated content type (`nostr_article`), separate from default Posts. It provides an article archive, single-article templates, optional `/.well-known/nostr.json` for NIP-05, optional browser extension sign-in (NIP-07 / NIP-42), and basic SEO integration (including sitemap support).
+This plugin fetches [NIP-23](https://github.com/nostr-protocol/nips/blob/master/23.md) long-form articles from relays you configure and stores them as a dedicated content type (`synalysis_article`), separate from default Posts. It provides an article archive, single-article templates, optional `/.well-known/nostr.json` for NIP-05, and basic SEO integration (including sitemap support).
 
 PHP dependencies are bundled in `vendor/` in official release zips, so site owners do not need to run Composer on the server.
 
@@ -27,7 +27,7 @@ PHP dependencies are bundled in `vendor/` in official release zips, so site owne
 
 = Are imported articles mixed with my normal blog posts? =
 
-No. Imported articles use the `nostr_article` custom post type. They appear under **Relay articles** in the admin and use the plugin’s archive and single templates. They do not replace or merge with default **Posts** unless your theme or another plugin explicitly queries that post type.
+No. Imported articles use the `synalysis_article` custom post type. They appear under **Relay articles** in the admin and use the plugin’s archive and single templates. They do not replace or merge with default **Posts** unless your theme or another plugin explicitly queries that post type.
 
 = Do I need Composer on my WordPress server? =
 
@@ -35,15 +35,18 @@ Not if you install from a release zip that includes `vendor/`. Composer is only 
 
 = Where do I report bugs or request features? =
 
-Use the [GitHub issue tracker](https://github.com/synalysis/nostr-wp-blog/issues).
+Use the [GitHub issue tracker](https://github.com/synalysis/synalysis-blog-importer-for-nostr/issues).
 
 == Changelog ==
+
+= 1.1.4 =
+* Removed the optional browser-extension login feature to avoid custom authentication on user sites. Tightened NIP-05 input validation, JSON-LD output, and release packaging for WordPress.org review.
 
 = 1.1.3 =
 * Plugin check / PHPCS compatibility: login redirect handling, NIP-05 request path, readme tags (max 5), prefixed template variables, slug collision via WP_Query, documented ignores where appropriate.
 
 = 1.1.2 =
-* Renamed plugin for WordPress.org trademark guidelines; text domain matches slug. Removed redundant load_plugin_textdomain (WP 4.6+). Documented public REST permission callbacks for extension sign-in.
+* Renamed plugin for WordPress.org trademark guidelines; text domain matches slug. Removed redundant load_plugin_textdomain (WP 4.6+). Documented public REST permission callbacks.
 * Admin notices limited to this plugin’s settings screen and (for a missing vendor tree) the Plugins list, in line with directory guidance on dashboard notices.
 
 = 1.1.1 =
@@ -56,6 +59,9 @@ Use the [GitHub issue tracker](https://github.com/synalysis/nostr-wp-blog/issues
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.4 =
+Removed custom extension sign-in and tightened review findings.
 
 = 1.1.3 =
 Coding standards and readme tag cleanup.

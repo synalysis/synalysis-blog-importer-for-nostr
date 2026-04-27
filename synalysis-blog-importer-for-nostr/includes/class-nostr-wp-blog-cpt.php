@@ -2,7 +2,7 @@
 /**
  * Custom post type and rewrite rules.
  *
- * @package NostrWpBlog
+ * @package SynalysisBlogImporterForNostr
  */
 
 declare(strict_types=1);
@@ -12,11 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers nostr_article and dynamic rewrites.
+ * Registers synalysis_article and dynamic rewrites.
  */
-final class Nostr_WP_Blog_CPT {
+final class Synalysis_Blog_Importer_CPT {
 
-	public const POST_TYPE = 'nostr_article';
+	public const POST_TYPE = 'synalysis_article';
 
 	public function register(): void {
 		add_action( 'init', array( $this, 'do_register_post_type' ), 5 );
@@ -66,7 +66,7 @@ final class Nostr_WP_Blog_CPT {
 		if ( $post->post_type !== self::POST_TYPE ) {
 			return $permalink;
 		}
-		$settings = nostr_wp_blog_get_settings();
+		$settings = synalysis_blog_importer_get_settings();
 		$archive  = isset( $settings['archive_slug'] ) ? sanitize_title( (string) $settings['archive_slug'] ) : 'blog';
 		if ( $archive === '' ) {
 			$archive = 'blog';
@@ -79,7 +79,7 @@ final class Nostr_WP_Blog_CPT {
 	}
 
 	public function register_rewrite_rules(): void {
-		$settings = nostr_wp_blog_get_settings();
+		$settings = synalysis_blog_importer_get_settings();
 		$archive  = isset( $settings['archive_slug'] ) ? sanitize_title( (string) $settings['archive_slug'] ) : 'blog';
 		if ( $archive === '' ) {
 			$archive = 'blog';

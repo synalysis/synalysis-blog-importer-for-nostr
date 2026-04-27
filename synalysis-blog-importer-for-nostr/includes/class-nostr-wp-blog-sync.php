@@ -2,7 +2,7 @@
 /**
  * Relay fetch, dedupe, and post upsert.
  *
- * @package NostrWpBlog
+ * @package SynalysisBlogImporterForNostr
  */
 
 declare(strict_types=1);
@@ -18,20 +18,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Nostr_WP_Blog_Sync {
+final class Synalysis_Blog_Importer_Sync {
 
-	public const CRON_HOOK = 'nostr_wp_blog_sync_cron';
+	public const CRON_HOOK = 'synalysis_blog_importer_sync_cron';
 
-	public const META_ADDRESS       = '_nostr_wp_blog_address';
-	public const META_EVENT_ID      = '_nostr_wp_blog_event_id';
-	public const META_PUBKEY        = '_nostr_wp_blog_pubkey';
-	public const META_D_TAG         = '_nostr_wp_blog_d_tag';
-	public const META_IMAGE         = '_nostr_wp_blog_image';
-	public const META_PUBLISHED_AT  = '_nostr_wp_blog_published_at';
-	public const META_EVENT_CREATED = '_nostr_wp_blog_event_created_at';
-	public const META_MARKDOWN      = '_nostr_wp_blog_markdown';
-	public const META_AUTHOR_DISPLAY = '_nostr_wp_blog_author_display';
-	public const META_TOPIC_TAGS     = '_nostr_wp_blog_topic_tags';
+	public const META_ADDRESS       = '_synalysis_blog_importer_address';
+	public const META_EVENT_ID      = '_synalysis_blog_importer_event_id';
+	public const META_PUBKEY        = '_synalysis_blog_importer_pubkey';
+	public const META_D_TAG         = '_synalysis_blog_importer_d_tag';
+	public const META_IMAGE         = '_synalysis_blog_importer_image';
+	public const META_PUBLISHED_AT  = '_synalysis_blog_importer_published_at';
+	public const META_EVENT_CREATED = '_synalysis_blog_importer_event_created_at';
+	public const META_MARKDOWN      = '_synalysis_blog_importer_markdown';
+	public const META_AUTHOR_DISPLAY = '_synalysis_blog_importer_author_display';
+	public const META_TOPIC_TAGS     = '_synalysis_blog_importer_topic_tags';
 
 	public function register(): void {
 		add_action( self::CRON_HOOK, array( $this, 'run_scheduled_sync' ) );
@@ -45,9 +45,9 @@ final class Nostr_WP_Blog_Sync {
 	 * @return array{imported:int, skipped:int, errors:list<string>}
 	 */
 	public function sync( bool $manual ): array {
-		$settings = nostr_wp_blog_get_settings();
-		$authors  = nostr_wp_blog_parse_lines( (string) $settings['authors'] );
-		$relays   = nostr_wp_blog_parse_lines( (string) $settings['relays'] );
+		$settings = synalysis_blog_importer_get_settings();
+		$authors  = synalysis_blog_importer_parse_lines( (string) $settings['authors'] );
+		$relays   = synalysis_blog_importer_parse_lines( (string) $settings['relays'] );
 
 		$result = array(
 			'imported' => 0,
@@ -103,7 +103,7 @@ final class Nostr_WP_Blog_Sync {
 		$this->persist_sync_meta( $result, $manual );
 
 		if ( $result['imported'] > 0 || $manual ) {
-			Nostr_WP_Blog_CPT::flush_rewrite_rules();
+			Synalysis_Blog_Importer_CPT::flush_rewrite_rules();
 		}
 
 		return $result;
@@ -217,8 +217,8 @@ final class Nostr_WP_Blog_Sync {
 			'missing_profile_count'  => 0,
 		);
 
-		$author_lines = nostr_wp_blog_parse_lines( (string) ( $settings['authors'] ?? '' ) );
-		$relays       = nostr_wp_blog_parse_lines( (string) ( $settings['relays'] ?? '' ) );
+		$author_lines = synalysis_blog_importer_parse_lines( (string) ( $settings['authors'] ?? '' ) );
+		$relays       = synalysis_blog_importer_parse_lines( (string) ( $settings['relays'] ?? '' ) );
 		if ( $author_lines === array() || $relays === array() ) {
 			return $empty;
 		}
@@ -226,7 +226,7 @@ final class Nostr_WP_Blog_Sync {
 		$ordered_pubkeys = array();
 		$seen            = array();
 		foreach ( $author_lines as $line ) {
-			$hex = nostr_wp_blog_normalize_pubkey_hex( $line );
+			$hex = synalysis_blog_importer_normalize_pubkey_hex( $line );
 			if ( $hex === null || isset( $seen[ $hex ] ) ) {
 				continue;
 			}
@@ -251,7 +251,7 @@ final class Nostr_WP_Blog_Sync {
 				++$missing_profile_count;
 			}
 
-			$base = nostr_wp_blog_sanitize_nip05_local_name( $raw_short );
+			$base = synalysis_blog_importer_sanitize_nip05_local_name( $raw_short );
 			if ( $base === '' ) {
 				$base = 'n-' . substr( $pk, 0, 8 );
 			}
@@ -369,7 +369,7 @@ final class Nostr_WP_Blog_Sync {
 			if ( ! isset( $event->pubkey, $event->kind, $event->created_at ) ) {
 				continue;
 			}
-			$d = nostr_wp_blog_event_tag( $event, 'd' );
+			$d = synalysis_blog_importer_event_tag( $event, 'd' );
 			if ( $d === '' ) {
 				continue;
 			}
@@ -386,30 +386,30 @@ final class Nostr_WP_Blog_Sync {
 	 * @param array<string, string>                    $profiles Pubkey => display name from kind 0
 	 */
 	private function upsert_article( object $event, array &$result, array $profiles = array() ): bool {
-		$d = nostr_wp_blog_event_tag( $event, 'd' );
+		$d = synalysis_blog_importer_event_tag( $event, 'd' );
 		if ( $d === '' || empty( $event->pubkey ) || empty( $event->id ) ) {
 			return false;
 		}
 
 		$pubkey  = strtolower( (string) $event->pubkey );
-		$address = nostr_wp_blog_article_address( $pubkey, $d );
+		$address = synalysis_blog_importer_article_address( $pubkey, $d );
 
-		$title_tag = nostr_wp_blog_event_tag( $event, 'title' );
-		$summary   = nostr_wp_blog_event_tag( $event, 'summary' );
-		$image     = nostr_wp_blog_event_tag( $event, 'image' );
-		$pub_at    = nostr_wp_blog_event_tag( $event, 'published_at' );
+		$title_tag = synalysis_blog_importer_event_tag( $event, 'title' );
+		$summary   = synalysis_blog_importer_event_tag( $event, 'summary' );
+		$image     = synalysis_blog_importer_event_tag( $event, 'image' );
+		$pub_at    = synalysis_blog_importer_event_tag( $event, 'published_at' );
 
 		$title = $title_tag !== '' ? $title_tag : $d;
 
 		$content_md = isset( $event->content ) && is_string( $event->content ) ? $event->content : '';
-		$html         = wp_kses_post( Nostr_WP_Blog_Markdown::to_html( $content_md ) );
+		$html         = wp_kses_post( Synalysis_Blog_Importer_Markdown::to_html( $content_md ) );
 
 		$dates = $this->resolve_post_dates( $event, $pub_at );
 
 		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key,WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Bounded sync: one row by stable address meta.
 		$existing = get_posts(
 			array(
-				'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
+				'post_type'      => Synalysis_Blog_Importer_CPT::POST_TYPE,
 				'post_status'    => 'any',
 				'meta_key'       => self::META_ADDRESS,
 				'meta_value'     => $address,
@@ -419,7 +419,7 @@ final class Nostr_WP_Blog_Sync {
 		);
 
 		$postarr = array(
-			'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
+			'post_type'      => Synalysis_Blog_Importer_CPT::POST_TYPE,
 			'post_title'     => $title,
 			'post_excerpt'   => $summary,
 			'post_content'   => $html,
@@ -438,7 +438,7 @@ final class Nostr_WP_Blog_Sync {
 				(string) $event->id,
 				$address
 			);
-			$slug = trim( (string) apply_filters( 'nostr_wp_blog_new_article_slug', $slug, $event, $pubkey, $d, $address ) );
+			$slug = trim( (string) apply_filters( 'synalysis_blog_importer_new_article_slug', $slug, $event, $pubkey, $d, $address ) );
 			if ( $slug === '' ) {
 				$slug = 'article-' . substr( hash( 'sha256', $address ), 0, 12 );
 			}
@@ -469,7 +469,7 @@ final class Nostr_WP_Blog_Sync {
 			update_post_meta( $post_id, self::META_AUTHOR_DISPLAY, $profiles[ $pubkey ] );
 		}
 
-		$topic_tags = nostr_wp_blog_event_tags_named( $event, 't' );
+		$topic_tags = synalysis_blog_importer_event_tags_named( $event, 't' );
 		$topics_clean = array();
 		foreach ( $topic_tags as $t ) {
 			$t = sanitize_text_field( $t );
@@ -535,11 +535,11 @@ final class Nostr_WP_Blog_Sync {
 	}
 
 	private function ensure_unique_slug( string $slug, string $pubkey, string $d ): string {
-		$address = nostr_wp_blog_article_address( $pubkey, $d );
+		$address = synalysis_blog_importer_article_address( $pubkey, $d );
 		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key,WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Bounded sync: one row by stable address meta.
 		$own_id  = get_posts(
 			array(
-				'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
+				'post_type'      => Synalysis_Blog_Importer_CPT::POST_TYPE,
 				'post_status'    => 'any',
 				'meta_key'       => self::META_ADDRESS,
 				'meta_value'     => $address,
@@ -554,7 +554,7 @@ final class Nostr_WP_Blog_Sync {
 			$candidate = $n === 0 ? $base : $base . '-' . $n;
 			$clash_ids = get_posts(
 				array(
-					'post_type'      => Nostr_WP_Blog_CPT::POST_TYPE,
+					'post_type'      => Synalysis_Blog_Importer_CPT::POST_TYPE,
 					'post_status'    => 'any',
 					'name'           => $candidate,
 					'posts_per_page' => 1,
@@ -597,7 +597,7 @@ final class Nostr_WP_Blog_Sync {
 	 * @param array{imported:int, errors:list<string>} $result
 	 */
 	private function persist_sync_meta( array $result, bool $manual ): void {
-		nostr_wp_blog_save_settings(
+		synalysis_blog_importer_save_settings(
 			array(
 				'last_sync'        => gmdate( 'c' ),
 				'last_sync_errors' => implode( "\n", $result['errors'] ),

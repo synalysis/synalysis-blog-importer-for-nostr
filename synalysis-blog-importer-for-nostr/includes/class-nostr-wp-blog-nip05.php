@@ -2,7 +2,7 @@
 /**
  * NIP-05: serve /.well-known/nostr.json?name=<local-part> with pubkey + relays.
  *
- * @package NostrWpBlog
+ * @package SynalysisBlogImporterForNostr
  */
 
 declare(strict_types=1);
@@ -11,9 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Nostr_WP_Blog_Nip05 {
+final class Synalysis_Blog_Importer_Nip05 {
 
-	public const QUERY_VAR = 'nostr_wp_blog_nip05';
+	public const QUERY_VAR = 'synalysis_blog_importer_nip05';
 
 	public function register(): void {
 		add_action( 'init', array( $this, 'add_rewrite_rule' ), 5 );
@@ -47,20 +47,22 @@ final class Nostr_WP_Blog_Nip05 {
 			return;
 		}
 
-		$settings = nostr_wp_blog_get_settings();
+		$settings = synalysis_blog_importer_get_settings();
 		if ( empty( $settings['nip05_enabled'] ) ) {
 			status_header( 404 );
 			nocache_headers();
 			exit;
 		}
 
-		$name = isset( $_GET['name'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['name'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$name = strtolower( $name );
-		if ( strlen( $name ) > 255 ) {
-			$name = substr( $name, 0, 255 );
+		$name = '';
+		if ( isset( $_GET['name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public read-only NIP-05 endpoint; clients cannot provide a WordPress nonce.
+			$raw_name = strtolower( sanitize_text_field( wp_unslash( (string) $_GET['name'] ) ) );
+			if ( preg_match( '/\\A[a-z0-9._-]{1,255}\\z/', $raw_name ) ) {
+				$name = $raw_name;
+			}
 		}
 
-		$map = nostr_wp_blog_get_nip05_name_map();
+		$map = synalysis_blog_importer_get_nip05_name_map();
 
 		$names_payload  = array();
 		$relays_payload = array();
@@ -68,7 +70,7 @@ final class Nostr_WP_Blog_Nip05 {
 		if ( $name !== '' && isset( $map[ $name ] ) ) {
 			$pk = $map[ $name ];
 			$names_payload[ $name ] = $pk;
-			$relays                   = nostr_wp_blog_parse_lines( (string) $settings['relays'] );
+			$relays                   = synalysis_blog_importer_parse_lines( (string) $settings['relays'] );
 			$relays_payload[ $pk ]    = array_values( $relays );
 		}
 
@@ -94,22 +96,6 @@ final class Nostr_WP_Blog_Nip05 {
 	}
 
 	private function is_well_known_request(): bool {
-		if ( (int) get_query_var( self::QUERY_VAR, 0 ) === 1 ) {
-			return true;
-		}
-
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Used only to compare request path via wp_parse_url(); not echoed.
-		$req_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
-		$req_path = wp_parse_url( $req_uri, PHP_URL_PATH );
-		if ( ! is_string( $req_path ) || $req_path === '' ) {
-			return false;
-		}
-
-		$expected = wp_parse_url( home_url( '/.well-known/nostr.json' ), PHP_URL_PATH );
-		if ( ! is_string( $expected ) || $expected === '' ) {
-			return false;
-		}
-
-		return untrailingslashit( $req_path ) === untrailingslashit( $expected );
+		return (int) get_query_var( self::QUERY_VAR, 0 ) === 1;
 	}
 }

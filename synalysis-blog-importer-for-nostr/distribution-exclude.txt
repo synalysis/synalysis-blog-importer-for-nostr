@@ -6,3 +6,9 @@
 .DS_Store
 __MACOSX
 distribution-exclude.txt
+vendor/*/test/*
+vendor/*/tests/*
+vendor/*/fixtures/*
+vendor/*/*/test/*
+vendor/*/*/tests/*
+vendor/*/*/fixtures/*

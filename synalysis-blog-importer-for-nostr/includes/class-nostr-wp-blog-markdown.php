@@ -2,7 +2,7 @@
 /**
  * Markdown to HTML (safe subset).
  *
- * @package NostrWpBlog
+ * @package SynalysisBlogImporterForNostr
  */
 
 declare(strict_types=1);
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Nostr_WP_Blog_Markdown {
+final class Synalysis_Blog_Importer_Markdown {
 
 	public static function to_html( string $markdown ): string {
 		$converter = new GithubFlavoredMarkdownConverter(

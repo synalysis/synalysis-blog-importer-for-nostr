@@ -2,7 +2,7 @@
 /**
  * Title, meta description, Open Graph, Twitter, JSON-LD.
  *
- * @package NostrWpBlog
+ * @package SynalysisBlogImporterForNostr
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Nostr_WP_Blog_SEO {
+final class Synalysis_Blog_Importer_SEO {
 
 	public function register(): void {
 		add_filter( 'pre_get_document_title', array( $this, 'filter_document_title' ), 20 );
@@ -37,14 +37,14 @@ final class Nostr_WP_Blog_SEO {
 	 * @return list<string>
 	 */
 	public function sitemap_post_types( array $post_types ): array {
-		if ( ! in_array( Nostr_WP_Blog_CPT::POST_TYPE, $post_types, true ) ) {
-			$post_types[] = Nostr_WP_Blog_CPT::POST_TYPE;
+		if ( ! in_array( Synalysis_Blog_Importer_CPT::POST_TYPE, $post_types, true ) ) {
+			$post_types[] = Synalysis_Blog_Importer_CPT::POST_TYPE;
 		}
 		return $post_types;
 	}
 
 	public function filter_document_title( string $title ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $title;
 		}
 		if ( defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) ) {
@@ -59,7 +59,7 @@ final class Nostr_WP_Blog_SEO {
 	 * @return array<string, string>
 	 */
 	public function filter_document_title_parts( array $parts ): array {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $parts;
 		}
 		if ( defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) ) {
@@ -73,7 +73,7 @@ final class Nostr_WP_Blog_SEO {
 	}
 
 	public function yoast_title( string $title ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $title;
 		}
 		$t = get_the_title();
@@ -81,7 +81,7 @@ final class Nostr_WP_Blog_SEO {
 	}
 
 	public function yoast_metadesc( string $desc ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $desc;
 		}
 		$d = $this->get_description();
@@ -97,14 +97,14 @@ final class Nostr_WP_Blog_SEO {
 	}
 
 	public function yoast_og_url( string $url ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $url;
 		}
 		return get_permalink() ?: $url;
 	}
 
 	public function yoast_og_image( string $image ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $image;
 		}
 		$u = $this->get_image_url();
@@ -112,7 +112,7 @@ final class Nostr_WP_Blog_SEO {
 	}
 
 	public function rankmath_title( string $title ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $title;
 		}
 		$t = get_the_title();
@@ -120,7 +120,7 @@ final class Nostr_WP_Blog_SEO {
 	}
 
 	public function rankmath_desc( string $desc ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $desc;
 		}
 		$d = $this->get_description();
@@ -128,7 +128,7 @@ final class Nostr_WP_Blog_SEO {
 	}
 
 	public function rankmath_og_image( string $image ): string {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return $image;
 		}
 		$u = $this->get_image_url();
@@ -136,7 +136,7 @@ final class Nostr_WP_Blog_SEO {
 	}
 
 	public function output_head(): void {
-		if ( ! is_singular( Nostr_WP_Blog_CPT::POST_TYPE ) ) {
+		if ( ! is_singular( Synalysis_Blog_Importer_CPT::POST_TYPE ) ) {
 			return;
 		}
 
@@ -191,12 +191,12 @@ final class Nostr_WP_Blog_SEO {
 
 	private function output_json_ld(): void {
 		$post = get_queried_object();
-		if ( ! $post instanceof \WP_Post || $post->post_type !== Nostr_WP_Blog_CPT::POST_TYPE ) {
+		if ( ! $post instanceof \WP_Post || $post->post_type !== Synalysis_Blog_Importer_CPT::POST_TYPE ) {
 			return;
 		}
 
-		$published = get_post_meta( $post->ID, Nostr_WP_Blog_Sync::META_PUBLISHED_AT, true );
-		$created   = get_post_meta( $post->ID, Nostr_WP_Blog_Sync::META_EVENT_CREATED, true );
+		$published = get_post_meta( $post->ID, Synalysis_Blog_Importer_Sync::META_PUBLISHED_AT, true );
+		$created   = get_post_meta( $post->ID, Synalysis_Blog_Importer_Sync::META_EVENT_CREATED, true );
 		$pub_ts    = ( is_string( $published ) && ctype_digit( $published ) ) ? (int) $published : null;
 		if ( $pub_ts === null || $pub_ts <= 0 ) {
 			$pub_ts = strtotime( $post->post_date_gmt . ' UTC' );
@@ -228,7 +228,7 @@ final class Nostr_WP_Blog_SEO {
 			$data['image'] = array( $img );
 		}
 
-		$pubkey = get_post_meta( $post->ID, Nostr_WP_Blog_Sync::META_PUBKEY, true );
+		$pubkey = get_post_meta( $post->ID, Synalysis_Blog_Importer_Sync::META_PUBKEY, true );
 		if ( is_string( $pubkey ) && $pubkey !== '' ) {
 			$data['author'] = array(
 				'@type' => 'Person',
@@ -236,14 +236,9 @@ final class Nostr_WP_Blog_SEO {
 			);
 		}
 
-		$json = wp_json_encode(
-			$data,
-			JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
-		);
-		if ( $json ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-LD from wp_json_encode() with JSON_HEX_* (safe in HTML).
-			printf( "<script type=\"application/ld+json\">%s</script>\n", $json );
-		}
+		echo '<script type="application/ld+json">';
+		echo wp_json_encode( $data );
+		echo "</script>\n";
 	}
 
 	private function get_description(): string {
@@ -266,7 +261,7 @@ final class Nostr_WP_Blog_SEO {
 		if ( ! $post instanceof \WP_Post ) {
 			return '';
 		}
-		$u = get_post_meta( $post->ID, Nostr_WP_Blog_Sync::META_IMAGE, true );
+		$u = get_post_meta( $post->ID, Synalysis_Blog_Importer_Sync::META_IMAGE, true );
 		return is_string( $u ) ? esc_url_raw( $u ) : '';
 	}
 
